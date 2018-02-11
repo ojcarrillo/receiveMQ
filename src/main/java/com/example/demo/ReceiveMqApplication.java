@@ -25,11 +25,13 @@ public class ReceiveMqApplication {
 		
 		ConnectionFactory factory = new ConnectionFactory();
 	    factory.setHost("localhost");
+	    factory.setUsername("b2c_client");
+	    factory.setPassword("SuperPassword000");
 	    factory.setPort(5672);
 	    Connection connection = factory.newConnection();
 	    Channel channel = connection.createChannel();
 
-	    channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+	    channel.queueDeclare(QUEUE_NAME, true, false, false, null);
 	    System.out.println(" [*] Waiting for messages. To exit press CTRL+C");	    
 	    
 	    Consumer consumer = new DefaultConsumer(channel) {
