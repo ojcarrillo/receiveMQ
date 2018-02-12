@@ -16,32 +16,40 @@ import com.rabbitmq.client.Envelope;
 
 @SpringBootApplication
 public class ReceiveMqApplication {
-	
+
 	private final static String QUEUE_NAME = "mq_movctas";
 
-	public static void main(String[] args) throws java.io.IOException,
-    		java.lang.InterruptedException, TimeoutException {
+	public static void main(String[] args)
+			throws java.io.IOException, java.lang.InterruptedException, TimeoutException {
 		SpringApplication.run(ReceiveMqApplication.class, args);
-		
+		/* configura la conexion al servidor de colas */
 		ConnectionFactory factory = new ConnectionFactory();
-	    factory.setHost("localhost");
-	    factory.setUsername("b2c_client");
-	    factory.setPassword("SuperPassword000");
-	    factory.setPort(5672);
-	    Connection connection = factory.newConnection();
-	    Channel channel = connection.createChannel();
-
-	    channel.queueDeclare(QUEUE_NAME, true, false, false, null);
-	    System.out.println(" [*] Waiting for messages. To exit press CTRL+C");	    
-	    
-	    Consumer consumer = new DefaultConsumer(channel) {
-	        @Override
-	        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
-	            throws IOException {
-	          String message = new String(body, "UTF-8");
-	          System.out.println(" [x] Received '" + message + "'");
-	        }
-	      };
-	      channel.basicConsume(QUEUE_NAME, true, consumer);
+		factory.setUsername("b2c_client");
+		factory.setPassword("SuperPassword000");
+		factory.setHost("localhost");
+		factory.setPort(5672);
+		/* abre la conexion */
+		Connection connection = factory.newConnection();
+		Channel channel = connection.createChannel();
+		/* declara la cola a la cual conectarse */
+		channel.queueDeclare(QUEUE_NAME, true, false, false, null);
+		System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
+		/* declara e implementa el listener de la cola para recibir los mensajes */
+		Consumer consumer = new DefaultConsumer(channel) {
+			@Override
+			public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
+					byte[] body) throws IOException {
+				/* obtiene el mensaje */
+				String message = new String(body, "UTF-8");
+				System.out.println(" [x] Received '" + message + "'");
+				/* valida el mensaje */
+				if(message!=null && message.trim().length()>0) {
+					AgregarDatosXML manager = new AgregarDatosXML();
+					manager.aggregarAlXML(message);
+				}
+			}
+		};
+		channel.basicConsume(QUEUE_NAME, true, consumer);
 	}
+	
 }
