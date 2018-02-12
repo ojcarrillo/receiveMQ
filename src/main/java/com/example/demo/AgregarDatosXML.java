@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,15 +47,16 @@ public class AgregarDatosXML {
 	
 	public void aggMsg(String msgAdd, String fileName) throws IOException {
 		File file = new File(fileName);
+		/* valida si existe el archivo, sino lo crea */
 		if(!file.exists()) {			
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 		}
-		try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get(fileName), StandardOpenOption.APPEND))) {
-		    out.write(msgAdd.getBytes());
-		    out.close();
-		} catch (IOException e) {
-		    System.err.println(e);
+		/* agrega el nuevo mensaje al archivo */
+		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileName), StandardOpenOption.APPEND)) {
+		    writer.write(msgAdd);
+		} catch (IOException ioe) {
+		    System.err.format("IOException: %s%n", ioe);
 		}
 	}
 
