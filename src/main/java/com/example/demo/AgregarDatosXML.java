@@ -38,7 +38,7 @@ public class AgregarDatosXML {
 		}
 		/* agrega la transaccion al archivo correspondiente */
 		if(fileName!=null) {
-			aggMsg(msgAdd, fileName);
+			aggMsg(msgAdd, PATH + fileName);
 		} else {
 			System.out.println("=============> formato no valido!!!");
 		}
@@ -49,7 +49,7 @@ public class AgregarDatosXML {
 		if(!file.exists()) {			
 			file.getParentFile().mkdirs();
 		}
-		try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get(PATH + fileName), StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
+		try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get(fileName), StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
 		    out.write(msgAdd.getBytes());
 		    out.close();
 		} catch (IOException e) {
