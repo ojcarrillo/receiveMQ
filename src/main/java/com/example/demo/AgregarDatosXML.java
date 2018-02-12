@@ -15,7 +15,7 @@ import java.nio.file.StandardOpenOption;
  */
 public class AgregarDatosXML {
 	
-	private final static String PATH = File.separator + "data" + File.separator + "tmp" + File.separator;
+	private final static String PATH = File.separator + "data" + File.separator + "serv_contabilidad" + File.separator;
 	private final static String BILL = "bill.txt";
 	private final static String INVOICE = "invoice.txt";
 	private final static String RECEIPTS = "recepits.txt";
@@ -37,7 +37,11 @@ public class AgregarDatosXML {
 			fileName = RECEIPTS;
 		}
 		/* agrega la transaccion al archivo correspondiente */
-		aggMsg(msgAdd, fileName);
+		if(fileName!=null) {
+			aggMsg(msgAdd, fileName);
+		} else {
+			System.out.println("=============> formato no valido!!!");
+		}
 	}
 	
 	public void aggMsg(String msgAdd, String fileName) {
