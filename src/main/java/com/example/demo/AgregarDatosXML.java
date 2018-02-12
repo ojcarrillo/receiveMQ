@@ -23,7 +23,7 @@ public class AgregarDatosXML {
 	public void aggregarAlXML(String msg) {
 		/* primer caracter determina el tipo de transaccion B,I,R */
 		String opc = msg.substring(0, 1);
-		String msgAdd = msg.substring(1, msg.length()); 
+		String msgAdd = msg.substring(1, 51); 
 		String fileName = null;
 		/* arma el nombre del archivo para agregar el mensaje */
 		if("B".equals(opc)) {
