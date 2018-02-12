@@ -20,7 +20,7 @@ public class AgregarDatosXML {
 	private final static String INVOICE = "invoice.txt";
 	private final static String RECEIPTS = "recepits.txt";
 	
-	public void aggregarAlXML(String msg) {
+	public void aggregarAlXML(String msg) throws IOException {
 		/* primer caracter determina el tipo de transaccion B,I,R */
 		String opc = msg.substring(0, 1);
 		String msgAdd = msg.substring(1, 51); 
@@ -44,12 +44,13 @@ public class AgregarDatosXML {
 		}
 	}
 	
-	public void aggMsg(String msgAdd, String fileName) {
+	public void aggMsg(String msgAdd, String fileName) throws IOException {
 		File file = new File(fileName);
 		if(!file.exists()) {			
 			file.getParentFile().mkdirs();
+			file.createNewFile();
 		}
-		try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get(fileName), StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
+		try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get(fileName), StandardOpenOption.APPEND))) {
 		    out.write(msgAdd.getBytes());
 		    out.close();
 		} catch (IOException e) {
