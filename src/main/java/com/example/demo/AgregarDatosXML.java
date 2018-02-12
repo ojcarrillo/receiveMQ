@@ -45,6 +45,10 @@ public class AgregarDatosXML {
 	}
 	
 	public void aggMsg(String msgAdd, String fileName) {
+		File file = new File(fileName);
+		if(!file.exists()) {			
+			file.getParentFile().mkdirs();
+		}
 		try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get(PATH + fileName), StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
 		    out.write(msgAdd.getBytes());
 		    out.close();
