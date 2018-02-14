@@ -16,7 +16,7 @@ import java.nio.file.StandardOpenOption;
  */
 public class AgregarDatosXML {
 	
-	private final static String PATH = File.separator + "data" + File.separator + "serv_contabilidad" + File.separator;
+	private final static String PATH = File.separator + "volume" + File.separator + "serv_contabilidad" + File.separator;
 	private final static String BILL = "bill.txt";
 	private final static String INVOICE = "invoice.txt";
 	private final static String RECEIPTS = "recepits.txt";
@@ -49,7 +49,7 @@ public class AgregarDatosXML {
 		File file = new File(fileName);
 		/* valida si existe el archivo, sino lo crea */
 		if(!file.exists()) {			
-			file.getParentFile().mkdirs();
+//			file.getParentFile().mkdirs();
 			file.createNewFile();
 		}
 		/* agrega el nuevo mensaje al archivo */
