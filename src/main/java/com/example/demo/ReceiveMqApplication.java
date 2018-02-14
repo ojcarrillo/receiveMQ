@@ -26,7 +26,8 @@ public class ReceiveMqApplication {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setUsername("b2c_client");
 		factory.setPassword("SuperPassword000");
-		factory.setHost("localhost");
+		System.out.println("probando!");
+		factory.setHost("10.162.0.2");
 		factory.setPort(5672);
 		/* abre la conexion */
 		Connection connection = factory.newConnection();
