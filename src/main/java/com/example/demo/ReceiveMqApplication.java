@@ -13,6 +13,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.GetResponse;
 
 @SpringBootApplication
 public class ReceiveMqApplication {
@@ -27,7 +28,7 @@ public class ReceiveMqApplication {
 		factory.setUsername("b2c_client");
 		factory.setPassword("SuperPassword000");
 		System.out.println("probando!");
-		factory.setHost("10.162.0.2");
+		factory.setHost("localhost");
 		factory.setPort(5672);
 		/* abre la conexion */
 		Connection connection = factory.newConnection();
@@ -46,7 +47,13 @@ public class ReceiveMqApplication {
 				/* valida el mensaje */
 				if(message!=null && message.trim().length()>0) {
 					AgregarDatosXML manager = new AgregarDatosXML();
-					manager.aggregarAlXML(message);
+					try{
+						manager.aggregarAlXML(message);
+					}catch(Exception ex) {
+						GetResponse gr = channel.basicGet(QUEUE_NAME, false);
+						channel.basicNack(gr.getEnvelope().getDeliveryTag(), false, true);
+						ex.printStackTrace();
+					}
 				}
 			}
 		};
