@@ -70,9 +70,11 @@ public class AgregarDatosXML {
 		/* agrega el nuevo mensaje al archivo */
 		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileName), StandardOpenOption.APPEND)) {
 		    writer.write(msgAdd);
+		    writer.close();
 		} catch (IOException ioe) {
 		    System.err.format("IOException: %s%n", ioe);
 		}
+		System.out.println(">>> dato agregado a "+fileName);
 	}
 
 }
