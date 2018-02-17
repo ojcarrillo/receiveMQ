@@ -16,12 +16,12 @@ import java.nio.file.StandardOpenOption;
  */
 public class AgregarDatosXML {
 	
-	private final static String PATH = File.separator + "volume" + File.separator + "serv_contabilidad" + File.separator;
+	private final static String PATH = File.separator + "data" + File.separator + "serv_contabilidad" + File.separator;
 	private final static String BILL = "bill.txt";
 	private final static String INVOICE = "invoice.txt";
 	private final static String RECEIPTS = "recepits.txt";
 	
-	public void aggregarAlXML(String msg) throws IOException {
+	public void aggregarAlXML(String msg) {
 		/* primer caracter determina el tipo de transaccion B,I,R */
 		String opc = msg.substring(0, 1);
 		String msgAdd = msg.substring(1, 51); 
@@ -38,10 +38,16 @@ public class AgregarDatosXML {
 			fileName = RECEIPTS;
 		}
 		/* agrega la transaccion al archivo correspondiente */
-		if(fileName!=null) {
-			aggMsg(msgAdd, PATH + fileName);
-		} else {
-			System.out.println("=============> formato no valido!!!");
+		try {
+			if(fileName!=null) {
+				aggMsg(msgAdd, PATH + fileName);
+			} else {
+				System.out.println("=============> formato no valido!!!");
+			}
+		}
+		catch (Exception e) {
+			System.out.println("=============> error de escritura!!!");
+			e.printStackTrace();
 		}
 	}
 	
@@ -49,7 +55,7 @@ public class AgregarDatosXML {
 		File file = new File(fileName);
 		/* valida si existe el archivo, sino lo crea */
 		if(!file.exists()) {			
-//			file.getParentFile().mkdirs();
+			file.getParentFile().mkdirs();
 			file.createNewFile();
 		}
 		/* agrega el nuevo mensaje al archivo */

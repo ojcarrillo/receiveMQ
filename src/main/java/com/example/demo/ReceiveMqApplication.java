@@ -38,14 +38,20 @@ public class ReceiveMqApplication {
 		System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 		/* declara e implementa el listener de la cola para recibir los mensajes */
 		Consumer consumer = new DefaultConsumer(channel) {
-				        @Override
-				        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
-				            throws IOException {
-				          String message = new String(body, "UTF-8");
-				          System.out.println(" [x] Received '" + message + "'");
-				        }
-				      };
-				      channel.basicConsume(QUEUE_NAME, true, consumer);
+			@Override
+			public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
+					byte[] body) throws IOException {
+				String message = new String(body, "UTF-8");
+				System.out.println(" [x] Received '" + message + "'");
+				try {
+					AgregarDatosXML proc = new AgregarDatosXML();
+					proc.aggregarAlXML(message);
+				} catch (Exception e) {
+					System.out.println("errro-------------------------------");
+				}
+			}
+		};
+		channel.basicConsume(QUEUE_NAME, true, consumer);
 	}
-	
+
 }
