@@ -61,11 +61,11 @@ public class AgregarDatosXML {
 		/* valida si existe el archivo, sino lo crea */
 		if(!file.exists()) {			
 			file.getParentFile().mkdirs();
+			file.createNewFile();
 			Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwxrwxrwx");
 		    FileAttribute<Set<PosixFilePermission>> fileAttributes = PosixFilePermissions
 		        .asFileAttribute(permissions);
-		    Files.setPosixFilePermissions(Paths.get(PATH), permissions);
-			file.createNewFile();
+		    Files.setPosixFilePermissions(Paths.get(file.getPath()), permissions);			
 		}
 		/* agrega el nuevo mensaje al archivo */
 		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileName), StandardOpenOption.APPEND)) {
