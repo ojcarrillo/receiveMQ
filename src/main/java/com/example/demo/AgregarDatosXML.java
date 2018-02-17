@@ -8,6 +8,11 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Permite manejar los mensajes recibidos y los agrega a los archivos de transacciones
@@ -56,6 +61,10 @@ public class AgregarDatosXML {
 		/* valida si existe el archivo, sino lo crea */
 		if(!file.exists()) {			
 			file.getParentFile().mkdirs();
+			Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwxrwxrwx");
+		    FileAttribute<Set<PosixFilePermission>> fileAttributes = PosixFilePermissions
+		        .asFileAttribute(permissions);
+		    Files.setPosixFilePermissions(Paths.get(fileName), permissions);
 			file.createNewFile();
 		}
 		/* agrega el nuevo mensaje al archivo */
