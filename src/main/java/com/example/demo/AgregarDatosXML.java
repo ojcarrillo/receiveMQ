@@ -64,7 +64,7 @@ public class AgregarDatosXML {
 			Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwxrwxrwx");
 		    FileAttribute<Set<PosixFilePermission>> fileAttributes = PosixFilePermissions
 		        .asFileAttribute(permissions);
-		    Files.setPosixFilePermissions(Paths.get(fileName), permissions);
+		    Files.setPosixFilePermissions(Paths.get(PATH), permissions);
 			file.createNewFile();
 		}
 		/* agrega el nuevo mensaje al archivo */
