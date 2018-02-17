@@ -47,13 +47,14 @@ public class ReceiveMqApplication {
 				/* valida el mensaje */
 				if(message!=null && message.trim().length()>0) {
 					AgregarDatosXML manager = new AgregarDatosXML();
-					try{
-						manager.aggregarAlXML(message);
-					}catch(Exception ex) {
-						GetResponse gr = channel.basicGet(QUEUE_NAME, false);
-						channel.basicNack(gr.getEnvelope().getDeliveryTag(), false, true);
-						ex.printStackTrace();
-					}
+					manager.aggregarAlXML(message);
+//					try{
+//						manager.aggregarAlXML(message);
+//					}catch(Exception ex) {
+//						GetResponse gr = channel.basicGet(QUEUE_NAME, false);
+//						channel.basicNack(gr.getEnvelope().getDeliveryTag(), false, true);
+//						ex.printStackTrace();
+//					}
 				}
 			}
 		};
