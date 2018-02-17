@@ -47,7 +47,7 @@ public class ReceiveMqApplication {
 				/* valida el mensaje */
 				if(message!=null && message.trim().length()>0) {
 					AgregarDatosXML manager = new AgregarDatosXML();
-					manager.aggregarAlXML(message);
+//					manager.aggregarAlXML(message);
 //					try{
 //						manager.aggregarAlXML(message);
 //					}catch(Exception ex) {
