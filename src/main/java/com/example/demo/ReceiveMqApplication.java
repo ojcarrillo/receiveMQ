@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
 import org.springframework.boot.SpringApplication;
@@ -14,11 +15,13 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.GetResponse;
+import com.rabbitmq.client.MessageProperties;
 
 @SpringBootApplication
 public class ReceiveMqApplication {
 
 	private final static String QUEUE_NAME = "mq_movctas";
+	private final static String RETRY_EXCHANGE = "re_movctas";
 
 	public static void main(String[] args)
 			throws java.io.IOException, java.lang.InterruptedException, TimeoutException {
@@ -28,7 +31,8 @@ public class ReceiveMqApplication {
 		factory.setUsername("b2c_client");
 		factory.setPassword("SuperPassword000");
 		System.out.println("probando!");
-		factory.setHost("localhost");
+		//factory.setHost("localhost");
+		factory.setHost("35.203.110.236");
 		factory.setPort(5672);
 		/* abre la conexion */
 		Connection connection = factory.newConnection();
@@ -48,6 +52,7 @@ public class ReceiveMqApplication {
 					proc.aggregarAlXML(message);
 				} catch (Exception e) {
 					System.out.println("errro-------------------------------");
+					channel.basicPublish(RETRY_EXCHANGE, "", MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes("UTF-8"));	
 				}
 			}
 		};
