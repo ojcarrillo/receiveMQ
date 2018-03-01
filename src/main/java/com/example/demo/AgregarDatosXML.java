@@ -14,6 +14,9 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.util.EnumSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Permite manejar los mensajes recibidos y los agrega a los archivos de transacciones
  * @author Administrador
@@ -21,7 +24,9 @@ import java.util.Set;
  */
 public class AgregarDatosXML {
 	
-	private final static String PATH = File.separator + "data" + File.separator + "serv_contabilidad" + File.separator;
+	private static final Logger log = LoggerFactory.getLogger(ReceiveMqApplication.class);
+	
+	private final static String PATH = File.separator + "ftp" + File.separator + "touresbalon" + File.separator + "serv_contabilidad" + File.separator;
 	private final static String BILL = "bill.txt";
 	private final static String INVOICE = "invoice.txt";
 	private final static String RECEIPTS = "recepits.txt";
@@ -47,11 +52,11 @@ public class AgregarDatosXML {
 			if(fileName!=null) {
 				aggMsg(msgAdd, PATH + fileName);
 			} else {
-				System.out.println("=============> formato no valido!!!");
+				log.error("=============> formato no valido!!!");
 			}
 		}
 		catch (Exception e) {
-			System.out.println("=============> error de escritura!!!");
+			log.error("=============> error de escritura!!! "+e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -72,9 +77,9 @@ public class AgregarDatosXML {
 		    writer.write(msgAdd);
 		    writer.close();
 		} catch (IOException ioe) {
-		    System.err.format("IOException: %s%n", ioe);
+		    log.error("IOException: %s%n", ioe);
 		}
-		System.out.println(">>> dato agregado a "+fileName);
+		log.info(">>> dato agregado a "+fileName);
 	}
 
 }
